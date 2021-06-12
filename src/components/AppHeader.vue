@@ -94,6 +94,13 @@ export default {
   &__title {
     flex: 1;
     margin-left: 0.5rem;
+    width: calc(100% - 5rem);
+
+    h3 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &__search-field {
