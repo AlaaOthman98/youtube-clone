@@ -36,7 +36,7 @@ export default {
   name: "AppHeader",
   data() {
     return {
-      headerTitle: "YouTube",
+      headerTitle: "",
       showSearchField: false,
       searchWord: "",
     };
@@ -72,6 +72,9 @@ export default {
         this.showSearchField = false;
       }
     },
+  },
+  created() {
+    this.headerTitle = this.$route.query.query ?? "YouTube";
   },
 };
 </script>
