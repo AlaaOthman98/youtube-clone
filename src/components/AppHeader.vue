@@ -30,6 +30,7 @@
 
 <script>
 export default {
+  name: "AppHeader",
   data() {
     return {
       headerTitle: "YouTube",
@@ -50,7 +51,18 @@ export default {
       }
     },
 
-    submitSearch() {},
+    submitSearch() {
+      if (this.searchWord) {
+        this.headerTitle = this.searchWord;
+
+        this.$router.push({
+          path: "search",
+          query: { query: this.searchWord },
+        });
+
+        this.showSearchField = false;
+      }
+    },
   },
 };
 </script>
