@@ -62,10 +62,12 @@ export default {
       if (this.searchWord) {
         this.headerTitle = this.searchWord;
 
-        this.$router.push({
-          path: "search",
-          query: { query: this.searchWord },
-        });
+        this.$router
+          .push({
+            path: "search",
+            query: { query: this.searchWord },
+          })
+          .catch(() => {});
 
         this.showSearchField = false;
       }
