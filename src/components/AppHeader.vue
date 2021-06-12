@@ -16,6 +16,9 @@
         type="text"
         v-model="searchWord"
         class="search-input"
+        ref="search"
+        @keyup.enter="onSearchKeyClick"
+        @keyup.esc="removeSearchField"
       />
       <button class="remove-search-field-btn" @click="removeSearchField">
         X
@@ -46,6 +49,10 @@ export default {
     onSearchKeyClick() {
       if (!this.showSearchField) {
         this.showSearchField = true;
+
+        this.$nextTick(() => {
+          this.$refs.search.focus();
+        });
       } else {
         this.submitSearch();
       }
