@@ -17,7 +17,9 @@
         v-model="searchWord"
         class="search-input"
       />
-      <button class="clear-search-btn" @click="clearSearchField">X</button>
+      <button class="remove-search-field-btn" @click="removeSearchField">
+        X
+      </button>
     </div>
 
     <div class="yt-header__search-key" @click="onSearchKeyClick">
@@ -36,8 +38,8 @@ export default {
     };
   },
   methods: {
-    clearSearchField() {
-      this.searchWord = "";
+    removeSearchField() {
+      this.showSearchField = false;
     },
 
     onSearchKeyClick() {
@@ -92,7 +94,7 @@ export default {
       }
     }
 
-    .clear-search-btn {
+    .remove-search-field-btn {
       border: none;
       background-color: $white;
       border-radius: 0 2px 2px 0;
