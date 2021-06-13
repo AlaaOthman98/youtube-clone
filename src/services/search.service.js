@@ -1,4 +1,4 @@
-import { SearchResults } from "@/models/SearchResults.model";
+import { SearchResults } from "@/models/search-results.model";
 
 const MAX_RESULTS_PER_PAGE = 20;
 const searchApiUrl = `https://youtube.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_API_KEY}`;
