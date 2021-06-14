@@ -13,13 +13,19 @@
       </div>
 
       <div v-else>
+        <SearchFilters />
 
         <div>
           <SearchItem
-            v-for="item in searchResultList"
-            :key="item.id"
+            v-for="(item, $index) in searchResultList"
+            :key="$index"
             :itemDetails="item"
           />
+
+          <infinite-loading
+            @infinite="infiniteHandler"
+            spinner="circles"
+          ></infinite-loading>
         </div>
       </div>
     </div>
@@ -39,6 +45,7 @@ export default {
   data() {
     return {
       loading: true,
+      searchKeyword: "",
       searchResult: {},
       searchResultList: [],
       noSearchResults: false,
@@ -78,12 +85,33 @@ export default {
         })
       );
     },
+
+    async infiniteHandler($state) {
+      const nextSearchResult = await getModifiedSearchResults(
+        this.searchKeyword,
+        this.searchResult.nextPageToken
+      );
+
+      const nextSearchResultList = await this.getSearchList(
+        nextSearchResult.items
+      );
+
+      this.searchResult.items.push(...nextSearchResult.items);
+      this.searchResult.nextPageToken = nextSearchResult.nextPageToken;
+      this.searchResult.totalResults = nextSearchResult.totalResults;
+
+      this.searchResultList.push(...nextSearchResultList);
+
+      $state.loaded();
+    },
   },
   async created() {
-    await this.searchByKeyword(this.$route.query.query);
+    this.searchKeyword = this.$route.query.query;
+    await this.searchByKeyword(this.searchKeyword);
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.searchByKeyword(to.query.query);
+    this.searchKeyword = to.query.query;
+    await this.searchByKeyword(this.searchKeyword);
 
     next();
   },
