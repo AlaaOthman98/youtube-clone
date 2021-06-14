@@ -1,5 +1,24 @@
 <template>
-  <div>{{ $route.query }}</div>
+  <div>
+    <div v-if="loading" class="loading-indicator">
+      <div class="loading-indicator__spinner">
+        <img src="@/assets/svg/animated-spinner.svg" />
+      </div>
+      <h4 class="loading-indicator__text">Loading</h4>
+    </div>
+
+    <div v-else>
+      <div v-if="noSearchResults" class="no-results">
+        <h3>No Search Results</h3>
+      </div>
+
+      <div v-else>
+        
+        <div>
+          
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -64,4 +83,27 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 50vh;
+  color: $dark-grey;
+
+  &__spinner {
+    img {
+      width: 4rem;
+    }
+  }
+}
+
+.no-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  color: $dark-grey;
+}
+</style>
