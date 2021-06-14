@@ -1,6 +1,7 @@
 class VideoItem {
   id;
   title;
+  type;
   description;
   publishedAt;
   thumbnails;
@@ -13,6 +14,7 @@ class VideoItem {
 
   setModifiedVideo(apiVideo) {
     this.id = apiVideo.items[0].id;
+    this.type = "video";
     this.title = apiVideo.items[0].snippet.title;
     this.description = apiVideo.items[0].snippet.description;
     this.publishedAt = apiVideo.items[0].snippet.publishedAt;

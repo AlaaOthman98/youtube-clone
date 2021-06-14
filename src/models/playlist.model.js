@@ -1,5 +1,6 @@
 class PlaylistItem {
   id;
+  type;
   title;
   description;
   publishedAt;
@@ -13,6 +14,7 @@ class PlaylistItem {
 
   setModifiedPlaylist(apiPlaylist) {
     this.id = apiPlaylist.items[0].id;
+    this.type = "playlist";
     this.title = apiPlaylist.items[0].snippet.title;
     this.description = apiPlaylist.items[0].snippet.description;
     this.publishedAt = apiPlaylist.items[0].snippet.publishedAt;

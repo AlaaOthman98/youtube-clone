@@ -1,5 +1,6 @@
 class ChannelItem {
   id;
+  type;
   title;
   description;
   publishedAt;
@@ -15,6 +16,7 @@ class ChannelItem {
 
   setModifiedChannel(apiChannel) {
     this.id = apiChannel.items[0].id;
+    this.type = "channel";
     this.title = apiChannel.items[0].snippet.title;
     this.description = apiChannel.items[0].snippet.description;
     this.publishedAt = apiChannel.items[0].snippet.publishedAt;
