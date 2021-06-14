@@ -27,7 +27,7 @@ class ChannelItem {
     this.subscriberCount = apiChannel.items[0].statistics.subscriberCount;
     this.videoCount = apiChannel.items[0].statistics.videoCount;
     this.bannerUrl =
-      apiChannel.items[0].brandingSettings.image.bannerExternalUrl;
+      apiChannel.items[0].brandingSettings.image?.bannerExternalUrl;
   }
 }
 
