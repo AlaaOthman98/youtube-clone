@@ -13,9 +13,14 @@
       </div>
 
       <div v-else>
-        
+
         <div>
-          
+          <SearchItem
+            v-for="item in searchResultList"
+            :key="item.id"
+            :itemDetails="item"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -23,6 +28,7 @@
 
 <script>
 import SearchFilters from "@/components/SearchFilters";
+import SearchItem from "@/components/SearchItem";
 import { getModifiedSearchResults } from "@/services/search.service";
 import { getModifiedChannelItem } from "@/services/channel.service";
 import { getModifiedPlaylistItem } from "@/services/playlist.service";
@@ -40,6 +46,7 @@ export default {
   },
   components: {
     SearchFilters,
+    SearchItem,
   },
   methods: {
     async searchByKeyword(keyword) {
