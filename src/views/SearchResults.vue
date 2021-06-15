@@ -1,32 +1,32 @@
 <template>
   <div>
-    <div v-if="loading" class="loading-indicator">
-      <div class="loading-indicator__spinner">
-        <img src="@/assets/svg/animated-spinner.svg" />
-      </div>
-      <h4 class="loading-indicator__text">Loading</h4>
+    <div v-if="noSearchResults" class="no-results">
+      <h3>No Search Results</h3>
     </div>
 
     <div v-else>
-      <div v-if="noSearchResults" class="no-results">
-        <h3>No Search Results</h3>
+      <SearchFilters @onFilterByType="filterResultsByType" />
+
+      <hr />
+
+      <div v-if="loading" class="loading-indicator">
+        <div class="loading-indicator__spinner">
+          <img src="@/assets/svg/animated-spinner.svg" />
+        </div>
+        <h4 class="loading-indicator__text">Loading</h4>
       </div>
 
       <div v-else>
-        <SearchFilters />
+        <SearchItem
+          v-for="(item, $index) in searchResultList"
+          :key="$index"
+          :itemDetails="item"
+        />
 
-        <div>
-          <SearchItem
-            v-for="(item, $index) in searchResultList"
-            :key="$index"
-            :itemDetails="item"
-          />
-
-          <infinite-loading
-            @infinite="infiniteHandler"
-            spinner="circles"
-          ></infinite-loading>
-        </div>
+        <infinite-loading
+          @infinite="infiniteHandler"
+          spinner="circles"
+        ></infinite-loading>
       </div>
     </div>
   </div>
@@ -47,6 +47,7 @@ export default {
     return {
       loading: true,
       searchKeyword: "",
+      searchTypeFilter: "",
       searchResult: {},
       searchResultList: [],
       noSearchResults: false,
@@ -61,6 +62,21 @@ export default {
       this.loading = true;
 
       this.searchResult = await getSearchResults(keyword);
+      this.searchResultList = await this.getSearchList(this.searchResult.items);
+
+      this.noSearchResults = this.searchResult.totalResults === 0;
+      this.loading = false;
+    },
+
+    async filterResultsByType(type) {
+      this.loading = true;
+      this.searchTypeFilter = type;
+
+      this.searchResult = await getSearchResults(
+        this.searchKeyword,
+        "",
+        this.searchTypeFilter
+      );
       this.searchResultList = await this.getSearchList(this.searchResult.items);
 
       this.noSearchResults = this.searchResult.totalResults === 0;
@@ -90,7 +106,8 @@ export default {
     async infiniteHandler($state) {
       const nextSearchResult = await getSearchResults(
         this.searchKeyword,
-        this.searchResult.nextPageToken
+        this.searchResult.nextPageToken,
+        this.searchTypeFilter
       );
 
       const nextSearchResultList = await this.getSearchList(
@@ -130,7 +147,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   height: 50vh;
-  color: $dark-grey;
+  color: $grey-500;
 
   &__spinner {
     img {
@@ -144,6 +161,6 @@ export default {
   align-items: center;
   justify-content: center;
   height: 90vh;
-  color: $dark-grey;
+  color: $grey-500;
 }
 </style>
