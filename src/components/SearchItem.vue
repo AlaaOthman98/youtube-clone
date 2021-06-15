@@ -96,14 +96,15 @@ export default {
     }
 
     span {
-      color: $dark-grey;
-      font-size: 15px;
+      color: $grey-500;
+      font-size: 14px;
     }
   }
 
   &.channel {
     .search-card__image {
       border-radius: 50%;
+      width: 8rem;
     }
 
     .search-card__info {

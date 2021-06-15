@@ -132,7 +132,7 @@ export default {
       border-radius: 0 2px 2px 0;
       padding-right: 0.5rem;
       cursor: pointer;
-      color: $dark-grey;
+      color: $grey-500;
     }
   }
 
