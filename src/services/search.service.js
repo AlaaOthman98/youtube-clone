@@ -9,14 +9,10 @@ const getSearchResults = async (queryText, pageToken = "") => {
     : `${searchApiUrl}&q=${queryText}&maxResults=${MAX_RESULTS_PER_PAGE}`;
   try {
     const response = await fetch(fullApiUrl);
-    return await response.json();
+    return new SearchResults(await response.json());
   } catch (error) {
     console.error(error);
   }
 };
 
-const getModifiedSearchResults = async (queryText, pageToken = "") => {
-  return new SearchResults(await getSearchResults(queryText, pageToken));
-};
-
-export { getModifiedSearchResults };
+export { getSearchResults };

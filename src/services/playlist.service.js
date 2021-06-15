@@ -7,14 +7,10 @@ const getPlaylistById = async (playlistId) => {
     const response = await fetch(
       `${playlistApiUrl}&part=snippet,contentDetails&id=${playlistId}`
     );
-    return await response.json();
+    return new PlaylistItem(await response.json());
   } catch (error) {
     console.error(error);
   }
 };
 
-const getModifiedPlaylistItem = async (playlistId) => {
-  return new PlaylistItem(await getPlaylistById(playlistId));
-};
-
-export { getModifiedPlaylistItem };
+export { getPlaylistById };

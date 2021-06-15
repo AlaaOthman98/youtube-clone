@@ -35,10 +35,11 @@
 <script>
 import SearchFilters from "@/components/SearchFilters";
 import SearchItem from "@/components/SearchItem";
-import { getModifiedSearchResults } from "@/services/search.service";
-import { getModifiedChannelItem } from "@/services/channel.service";
-import { getModifiedPlaylistItem } from "@/services/playlist.service";
-import { getModifiedVideoItem } from "@/services/video.service";
+
+import { getSearchResults } from "@/services/search.service";
+import { getChannelById } from "@/services/channel.service";
+import { getPlaylistById } from "@/services/playlist.service";
+import { getVideoById } from "@/services/video.service";
 
 export default {
   name: "SearchResults",
@@ -59,7 +60,7 @@ export default {
     async searchByKeyword(keyword) {
       this.loading = true;
 
-      this.searchResult = await getModifiedSearchResults(keyword);
+      this.searchResult = await getSearchResults(keyword);
       this.searchResultList = await this.getSearchList(this.searchResult.items);
 
       this.noSearchResults = this.searchResult.totalResults === 0;
@@ -68,17 +69,17 @@ export default {
 
     getSearchList(searchItems) {
       return Promise.all(
-        searchItems.map((res) => {
+        searchItems.map(async (res) => {
           let searchItem;
           switch (res.type) {
             case "channel":
-              searchItem = getModifiedChannelItem(res.id);
+              searchItem = await getChannelById(res.id);
               break;
             case "playlist":
-              searchItem = getModifiedPlaylistItem(res.id);
+              searchItem = await getPlaylistById(res.id);
               break;
             case "video":
-              searchItem = getModifiedVideoItem(res.id);
+              searchItem = await getVideoById(res.id);
               break;
           }
           return searchItem;
@@ -87,7 +88,7 @@ export default {
     },
 
     async infiniteHandler($state) {
-      const nextSearchResult = await getModifiedSearchResults(
+      const nextSearchResult = await getSearchResults(
         this.searchKeyword,
         this.searchResult.nextPageToken
       );
@@ -103,6 +104,10 @@ export default {
       this.searchResultList.push(...nextSearchResultList);
 
       $state.loaded();
+
+      if (this.searchResult.items?.length >= this.searchResult.totalResults) {
+        $state.state.complete();
+      }
     },
   },
   async created() {

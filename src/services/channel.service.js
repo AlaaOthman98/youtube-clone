@@ -7,14 +7,10 @@ const getChannelById = async (channelId) => {
     const response = await fetch(
       `${channelApiUrl}&part=snippet,brandingSettings,statistics&id=${channelId}`
     );
-    return await response.json();
+    return new ChannelItem(await response.json());
   } catch (error) {
     console.error(error);
   }
 };
 
-const getModifiedChannelItem = async (channelId) => {
-  return new ChannelItem(await getChannelById(channelId));
-};
-
-export { getModifiedChannelItem };
+export { getChannelById };

@@ -7,14 +7,10 @@ const getVideoById = async (videoId) => {
     const response = await fetch(
       `${videoApiUrl}&part=snippet,statistics&id=${videoId}`
     );
-    return await response.json();
+    return new VideoItem(await response.json());
   } catch (error) {
     console.error(error);
   }
 };
 
-const getModifiedVideoItem = async (videoId) => {
-  return new VideoItem(await getVideoById(videoId));
-};
-
-export { getModifiedVideoItem };
+export { getVideoById };
