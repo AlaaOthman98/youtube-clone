@@ -125,26 +125,26 @@ export default {
 
     async infiniteHandler($state) {
       if (this.searchResult.nextPageToken) {
-      const nextSearchResult = await getSearchResults(
-        this.searchKeyword,
-        this.searchResult.nextPageToken,
+        const nextSearchResult = await getSearchResults(
+          this.searchKeyword,
+          this.searchResult.nextPageToken,
           this.searchTypeFilter,
           this.searchDateFilter
-      );
+        );
 
-      const nextSearchResultList = await this.getSearchList(
-        nextSearchResult.items
-      );
+        const nextSearchResultList = await this.getSearchList(
+          nextSearchResult.items
+        );
 
-      this.searchResult.items.push(...nextSearchResult.items);
-      this.searchResult.nextPageToken = nextSearchResult.nextPageToken;
-      this.searchResult.totalResults = nextSearchResult.totalResults;
+        this.searchResult.items.push(...nextSearchResult.items);
+        this.searchResult.nextPageToken = nextSearchResult.nextPageToken;
+        this.searchResult.totalResults = nextSearchResult.totalResults;
 
-      this.searchResultList.push(...nextSearchResultList);
+        this.searchResultList.push(...nextSearchResultList);
 
-      $state.loaded();
+        $state.loaded();
 
-      if (this.searchResult.items?.length >= this.searchResult.totalResults) {
+        if (this.searchResult.items?.length >= this.searchResult.totalResults) {
           $state.complete();
         }
       } else {
@@ -155,11 +155,15 @@ export default {
   },
   async created() {
     this.searchKeyword = this.$route.query.query;
-    await this.searchByKeyword(this.searchKeyword);
+    this.searchKeyword
+      ? await this.searchByKeyword(this.searchKeyword)
+      : (this.noSearchResults = true);
   },
   async beforeRouteUpdate(to, from, next) {
     this.searchKeyword = to.query.query;
-    await this.searchByKeyword(this.searchKeyword);
+    this.searchKeyword
+      ? await this.searchByKeyword(this.searchKeyword)
+      : (this.noSearchResults = true);
 
     next();
   },
