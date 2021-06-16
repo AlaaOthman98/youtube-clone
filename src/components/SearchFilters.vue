@@ -10,6 +10,16 @@
           {{ option.text }}
         </option>
       </select>
+
+      <select class="filters__menu" @change="filterResultsByUploadDate($event)">
+        <option
+          v-for="(option, $index) in uploadDateMenuOptions"
+          :key="$index"
+          :value="option.value"
+        >
+          {{ option.text }}
+        </option>
+      </select>
     </div>
   </div>
 </template>
@@ -36,6 +46,25 @@ export default {
           value: "playlist",
         },
       ],
+
+      uploadDateMenuOptions: [
+        {
+          text: "Any time",
+          value: "",
+        },
+        {
+          text: "This day",
+          value: `${new Date().toISOString()}`,
+        },
+        {
+          text: "This week",
+          value: `${this.getFirstDayInCurrentWeek().toISOString()}`,
+        },
+        {
+          text: "This month",
+          value: `${this.getFirstDayInCurrentMonth().toISOString()}`,
+        },
+      ],
     };
   },
   methods: {
@@ -43,8 +72,26 @@ export default {
       this.$emit("onFilterByType", $event.target.value);
     },
 
-    filterResultsByTime($event) {
-      this.$emit("onFilterByTime", $event.target.value);
+    filterResultsByUploadDate($event) {
+      this.$emit("onFilterByUploadDate", $event.target.value);
+    },
+
+    getFirstDayInCurrentWeek() {
+      const todayDate = new Date();
+      const day = todayDate.getDay();
+      const diff = todayDate.getDate() - day + (day == 0 ? -6 : 1); // handle sunday case
+
+      return new Date(todayDate.setDate(diff));
+    },
+
+    getFirstDayInCurrentMonth() {
+      const today = new Date();
+      const firstMonthDay = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        1
+      ).setHours(today.getHours() + 2);
+      return new Date(firstMonthDay);
     },
   },
 };

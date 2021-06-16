@@ -1,14 +1,18 @@
 <template>
   <div>
+    <SearchFilters
+      v-if="!noSearchResults"
+      @onFilterByType="filterResultsByType"
+      @onFilterByUploadDate="filterResultsByUploadDate"
+    />
+
+    <hr v-if="!noSearchResults" />
+
     <div v-if="noSearchResults" class="no-results">
       <h3>No Search Results</h3>
     </div>
 
     <div v-else>
-      <SearchFilters @onFilterByType="filterResultsByType" />
-
-      <hr />
-
       <div v-if="loading" class="loading-indicator">
         <div class="loading-indicator__spinner">
           <img src="@/assets/svg/animated-spinner.svg" />
@@ -47,6 +51,7 @@ export default {
       loading: false,
       searchKeyword: "",
       searchTypeFilter: "",
+      searchDateFilter: "",
       searchResult: {},
       searchResultList: [],
       noSearchResults: false,
@@ -75,6 +80,22 @@ export default {
         this.searchKeyword,
         "",
         this.searchTypeFilter
+      );
+      this.searchResultList = await this.getSearchList(this.searchResult.items);
+
+      this.noSearchResults = this.searchResult.totalResults === 0;
+      this.loading = false;
+    },
+
+    async filterResultsByUploadDate(afterDate) {
+      this.loading = true;
+      this.searchDateFilter = afterDate;
+
+      this.searchResult = await getSearchResults(
+        this.searchKeyword,
+        "",
+        this.searchTypeFilter,
+        this.searchDateFilter
       );
       this.searchResultList = await this.getSearchList(this.searchResult.items);
 
@@ -146,6 +167,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+hr {
+  border: none;
+  display: block;
+  height: 1px;
+  border-top: 1px solid $grey-300;
+}
+
 .loading-indicator {
   display: flex;
   align-items: center;
@@ -165,7 +193,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 90vh;
+  height: 80vh;
   color: $grey-500;
 }
 </style>
