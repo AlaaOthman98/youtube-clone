@@ -23,10 +23,9 @@
           :itemDetails="item"
         />
 
-        <infinite-loading
-          @infinite="infiniteHandler"
-          spinner="circles"
-        ></infinite-loading>
+        <infinite-loading @infinite="infiniteHandler" spinner="circles">
+          <div slot="no-more" style="margin: 0.5rem 0">No more results.</div>
+        </infinite-loading>
       </div>
     </div>
   </div>
@@ -45,7 +44,7 @@ export default {
   name: "SearchResults",
   data() {
     return {
-      loading: true,
+      loading: false,
       searchKeyword: "",
       searchTypeFilter: "",
       searchResult: {},
@@ -104,10 +103,12 @@ export default {
     },
 
     async infiniteHandler($state) {
+      if (this.searchResult.nextPageToken) {
       const nextSearchResult = await getSearchResults(
         this.searchKeyword,
         this.searchResult.nextPageToken,
-        this.searchTypeFilter
+          this.searchTypeFilter,
+          this.searchDateFilter
       );
 
       const nextSearchResultList = await this.getSearchList(
@@ -123,7 +124,11 @@ export default {
       $state.loaded();
 
       if (this.searchResult.items?.length >= this.searchResult.totalResults) {
-        $state.state.complete();
+          $state.complete();
+        }
+      } else {
+        $state.loaded();
+        $state.complete();
       }
     },
   },
