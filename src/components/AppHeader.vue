@@ -77,6 +77,12 @@ export default {
     this.headerTitle = this.$route.query.query ?? "YouTube";
     this.searchWord = this.$route.query.query ?? "";
   },
+  watch: {
+    $route(to) {
+      this.headerTitle = to.query.query ?? "YouTube";
+      this.searchWord = to.query.query ?? "";
+    },
+  },
 };
 </script>
 
