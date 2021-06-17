@@ -1,5 +1,42 @@
 <template>
-  <div>{{ $route.query.channelId }}</div>
+  <div>
+    <BaseLoader v-if="loading" />
+
+    <div v-else class="channel-header">
+      <div
+        :style="{ backgroundImage: 'url(' + channelDetails.bannerUrl + ')' }"
+        class="channel-header__banner"
+      ></div>
+
+      <img
+        v-if="channelDetails.thumbnails"
+        :src="channelDetails.thumbnails.mediumUrl"
+        :alt="channelDetails.title"
+        class="channel-header__thumbnail"
+      />
+
+      <div class="channel-header__info">
+        <h3 class="channel-header__info__title">{{ channelDetails.title }}</h3>
+        <div class="channel-header__info__subscribe">
+          <a class="channel-header__info__subscribe__link">
+            <img src="@/assets/svg/logo-red.svg" />
+            subscribe
+          </a>
+          <span class="channel-header__info__subscribe__count">{{
+            getSubscribesCount
+          }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="channel-content">
+      <SearchItem
+        v-for="(playlist, $index) in channelPlaylists"
+        :key="$index"
+        :itemDetails="playlist"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -59,4 +96,54 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.channel-header {
+  position: relative;
+
+  &__banner {
+    height: 20vh;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  &__thumbnail {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    transform: translate(1.5rem, -2.2rem);
+    position: absolute;
+  }
+
+  &__info {
+    background-color: $grey-300;
+    padding: 2.5rem 5.5rem 1.5rem;
+
+    &__title {
+      font-weight: 400;
+    }
+
+    &__subscribe {
+      display: flex;
+      align-items: center;
+
+      &__link {
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        color: $primary-red;
+        margin-right: 0.5rem;
+
+        img {
+          margin-right: 0.25rem;
+          width: 25px;
+        }
+      }
+
+      &__count {
+        color: $grey-500;
+      }
+    }
+  }
+}
+</style>
