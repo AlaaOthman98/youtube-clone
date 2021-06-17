@@ -1,5 +1,6 @@
 import { PlaylistItem } from "@/models/playlist.model";
 
+const MAX_RESULTS_PER_PAGE = 1000;
 const playlistApiUrl = `https://www.googleapis.com/youtube/v3/playlists?key=${process.env.VUE_APP_YOUTUBE_API_KEY}`;
 
 const getPlaylistById = async (playlistId) => {
@@ -13,4 +14,15 @@ const getPlaylistById = async (playlistId) => {
   }
 };
 
-export { getPlaylistById };
+const getPlaylistsByChannelId = async (channelId) => {
+  try {
+    const response = await fetch(
+      `${playlistApiUrl}&part=snippet,contentDetails&channelId=${channelId}&maxResults=${MAX_RESULTS_PER_PAGE}`
+    );
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getPlaylistById, getPlaylistsByChannelId };
