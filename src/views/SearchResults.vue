@@ -179,5 +179,9 @@ hr {
   justify-content: center;
   height: 80vh;
   color: $grey-500;
+
+  h3 {
+    font-weight: 400;
+  }
 }
 </style>
