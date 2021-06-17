@@ -26,6 +26,7 @@
 
 <script>
 export default {
+  name: "SearchFilters",
   data() {
     return {
       typeMenuOptions: [

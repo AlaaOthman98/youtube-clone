@@ -2,17 +2,31 @@
   <div>
     <div v-if="itemDetails.type === 'channel'">
       <div class="search-card channel">
-        <img
-          :src="itemDetails.thumbnails.mediumUrl"
-          :alt="itemDetails.title"
-          class="search-card__image"
-        />
+        <router-link
+          :to="{
+            path: 'channel',
+            query: { channelId: itemDetails.id },
+          }"
+        >
+          <img
+            :src="itemDetails.thumbnails.mediumUrl"
+            :alt="itemDetails.title"
+            class="search-card__image"
+          />
+        </router-link>
 
-        <div class="search-card__info">
-          <h4>{{ itemDetails.title }}</h4>
-          <span>{{ videosNumber }} videos</span>
-          <span>{{ subscribersNumber }} subscribers</span>
-        </div>
+        <router-link
+          :to="{
+            path: 'channel',
+            query: { channelId: itemDetails.id },
+          }"
+        >
+          <div class="search-card__info">
+            <h4>{{ itemDetails.title }}</h4>
+            <span>{{ videosNumber }} videos</span>
+            <span>{{ subscribersNumber }} subscribers</span>
+          </div>
+        </router-link>
       </div>
     </div>
 
@@ -58,6 +72,7 @@
 
 <script>
 export default {
+  name: "SearchItem",
   props: {
     itemDetails: {
       type: Object,

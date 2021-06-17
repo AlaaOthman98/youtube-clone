@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import SearchResultsComponent from "@/views/SearchResults";
+import ChannelComponent from "@/views/Channel";
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,10 @@ const routes = [
   {
     path: "/search",
     component: SearchResultsComponent,
+  },
+  {
+    path: "/channel",
+    component: ChannelComponent,
   },
 ];
 
