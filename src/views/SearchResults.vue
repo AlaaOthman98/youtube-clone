@@ -13,12 +13,7 @@
     </div>
 
     <div v-else>
-      <div v-if="loading" class="loading-indicator">
-        <div class="loading-indicator__spinner">
-          <img src="@/assets/svg/animated-spinner.svg" />
-        </div>
-        <h4 class="loading-indicator__text">Loading</h4>
-      </div>
+      <BaseLoader v-if="loading" />
 
       <div v-else>
         <SearchItem
@@ -176,21 +171,6 @@ hr {
   display: block;
   height: 1px;
   border-top: 1px solid $grey-300;
-}
-
-.loading-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 50vh;
-  color: $grey-500;
-
-  &__spinner {
-    img {
-      width: 4rem;
-    }
-  }
 }
 
 .no-results {
