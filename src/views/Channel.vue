@@ -2,39 +2,47 @@
   <div>
     <BaseLoader v-if="loading" />
 
-    <div v-else class="channel-header">
-      <div
-        :style="{ backgroundImage: 'url(' + channelDetails.bannerUrl + ')' }"
-        class="channel-header__banner"
-      ></div>
+    <div v-else>
+      <div class="channel-header">
+        <div
+          :style="{ backgroundImage: 'url(' + channelDetails.bannerUrl + ')' }"
+          class="channel-header__banner"
+        ></div>
 
-      <img
-        v-if="channelDetails.thumbnails"
-        :src="channelDetails.thumbnails.mediumUrl"
-        :alt="channelDetails.title"
-        class="channel-header__thumbnail"
-      />
+        <img
+          v-if="channelDetails.thumbnails"
+          :src="channelDetails.thumbnails.mediumUrl"
+          :alt="channelDetails.title"
+          class="channel-header__thumbnail"
+        />
 
-      <div class="channel-header__info">
-        <h3 class="channel-header__info__title">{{ channelDetails.title }}</h3>
-        <div class="channel-header__info__subscribe">
-          <a class="channel-header__info__subscribe__link">
-            <img src="@/assets/svg/logo-red.svg" />
-            subscribe
-          </a>
-          <span class="channel-header__info__subscribe__count">{{
-            getSubscribesCount
-          }}</span>
+        <div class="channel-header__info">
+          <h3 class="channel-header__info__title">
+            {{ channelDetails.title }}
+          </h3>
+          <div class="channel-header__info__subscribe">
+            <a class="channel-header__info__subscribe__link">
+              <img src="@/assets/svg/logo-red.svg" />
+              subscribe
+            </a>
+            <span class="channel-header__info__subscribe__count">{{
+              getSubscribesCount
+            }}</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="channel-content">
-      <SearchItem
-        v-for="(playlist, $index) in channelPlaylists"
-        :key="$index"
-        :itemDetails="playlist"
-      />
+      <div v-if="noPlaylistsFound" class="no-results">
+        <h3>No playlist in this channel</h3>
+      </div>
+
+      <div v-else class="channel-content">
+        <SearchItem
+          v-for="(playlist, $index) in channelPlaylists"
+          :key="$index"
+          :itemDetails="playlist"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -71,9 +79,13 @@ export default {
       this.channelDetails = await getChannelById(channelId);
       this.channelPlaylists = await getPlaylistsByChannelId(channelId);
 
-      this.channelPlaylists = this.channelPlaylists.items.map((playlist) => {
-        return new PlaylistItem({ items: [playlist] });
-      });
+      this.noPlaylistsFound = this.channelPlaylists.pageInfo.totalResults === 0;
+
+      if (!this.noPlaylistsFound) {
+        this.channelPlaylists = this.channelPlaylists.items.map((playlist) => {
+          return new PlaylistItem({ items: [playlist] });
+        });
+      }
 
       this.loading = false;
     },
@@ -83,6 +95,8 @@ export default {
 
     if (this.channelId) {
       await this.getChannelPlaylists(this.channelId);
+    } else {
+      this.noPlaylistsFound = true;
     }
   },
   async beforeRouteUpdate(to, from, next) {
@@ -90,6 +104,8 @@ export default {
 
     if (this.channelId) {
       await this.getChannelPlaylists(this.channelId);
+    } else {
+      this.noPlaylistsFound = true;
     }
     next();
   },
@@ -144,6 +160,18 @@ export default {
         color: $grey-500;
       }
     }
+  }
+}
+
+.no-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  color: $grey-500;
+
+  h3 {
+    font-weight: 400;
   }
 }
 </style>
