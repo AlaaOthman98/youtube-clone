@@ -21,9 +21,14 @@
             {{ channelDetails.title }}
           </h3>
           <div class="channel-header__info__subscribe">
-            <a class="channel-header__info__subscribe__link">
+            <a
+              class="channel-header__info__subscribe__link"
+              v-bind:class="{ subscribed: subscribedToChannel }"
+              @click="subscribedToChannel = !subscribedToChannel"
+            >
               <img src="@/assets/svg/logo-red.svg" />
-              subscribe
+              <span v-if="!subscribedToChannel">subscribe</span>
+              <span v-else>subscribed</span>
             </a>
             <span class="channel-header__info__subscribe__count">{{
               getSubscribesCount
@@ -61,6 +66,7 @@ export default {
       channelId: "",
       channelDetails: {},
       channelPlaylists: [],
+      subscribedToChannel: false,
       noPlaylistsFound: false,
     };
   },
@@ -149,10 +155,15 @@ export default {
         text-transform: uppercase;
         color: $primary-red;
         margin-right: 0.5rem;
+        cursor: pointer;
 
         img {
           margin-right: 0.25rem;
           width: 25px;
+        }
+
+        &.subscribed {
+          color: $grey-500;
         }
       }
 
