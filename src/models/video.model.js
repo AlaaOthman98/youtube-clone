@@ -8,9 +8,9 @@ class VideoItem {
   channelId;
   channelTitle;
   viewCount;
-  likesCount;
-  dislikesCount;
-  embedUrl;
+  likeCount;
+  dislikeCount;
+  embedHtml;
 
   constructor(apiVideo) {
     this.setModifiedVideo(apiVideo);
@@ -33,10 +33,10 @@ class VideoItem {
     this.channelTitle = apiVideo.items[0].snippet.channelTitle;
 
     this.viewCount = apiVideo.items[0].statistics.viewCount;
-    this.likesCount = apiVideo.items[0].statistics.likesCount;
-    this.dislikesCount = apiVideo.items[0].statistics.dislikesCount;
+    this.likeCount = apiVideo.items[0].statistics.likeCount;
+    this.dislikeCount = apiVideo.items[0].statistics.dislikeCount;
 
-    this.embedUrl = apiVideo.items[0].player.embedHtml;
+    this.embedHtml = apiVideo.items[0].player.embedHtml;
   }
 }
 
