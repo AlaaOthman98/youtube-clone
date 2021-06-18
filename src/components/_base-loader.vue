@@ -25,5 +25,9 @@ export default {};
       width: 4rem;
     }
   }
+
+  &__text {
+    font-weight: 400;
+  }
 }
 </style>
