@@ -33,7 +33,7 @@
             :fill="likeIconColor"
           ></inline-svg>
 
-          {{ videoDetails.likeCount }}
+          {{ likesNumber }}
         </div>
 
         <div class="video-info__rating__dislikes" @click="rateVideo($event)">
@@ -42,7 +42,7 @@
             :src="require('../assets/svg/dislike.svg')"
             :fill="dislikeIconColor"
           ></inline-svg>
-          {{ videoDetails.dislikeCount }}
+          {{ dislikesNumber }}
         </div>
       </div>
 
@@ -108,6 +108,12 @@ export default {
   computed: {
     viewsNumber() {
       return Number(this.videoDetails.viewCount).toLocaleString();
+    },
+    likesNumber() {
+      return Number(this.videoDetails.likeCount).toLocaleString();
+    },
+    dislikesNumber() {
+      return Number(this.videoDetails.dislikeCount).toLocaleString();
     },
   },
   methods: {
