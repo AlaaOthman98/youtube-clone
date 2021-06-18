@@ -69,18 +69,28 @@
       </div>
     </div>
 
-    <div class="related-videos"></div>
+    <div class="clear-floats"></div>
+
+    <div class="related-videos">
+      <SearchItem
+        v-for="(video, $index) in relatedVideosList"
+        :key="$index"
+        :itemDetails="video"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import { getVideoById } from "@/services/video.service";
+import { getResultsRelatedToVideo } from "@/services/search.service";
+
+import SearchItem from "@/components/SearchItem";
 
 const greyColor = "#979696";
 const blueColor = "#3ea6ff";
 
 export default {
-  name: "Video",
   data() {
     return {
       videoId: "",
@@ -89,7 +99,11 @@ export default {
       likeIconColor: greyColor,
       dislikeIconColor: greyColor,
       showDescription: false,
+      relatedVideosList: [],
     };
+  },
+  components: {
+    SearchItem,
   },
   computed: {
     viewsNumber() {
@@ -128,12 +142,20 @@ export default {
       event.target.classList.toggle("open");
       this.showDescription = !this.showDescription;
     },
+    getRelatedVideosList(relatedVideos) {
+      return Promise.all(
+        relatedVideos.items.map(async (res) => await getVideoById(res.id))
+      );
+    },
   },
   async created() {
     this.videoId = this.$route.query.videoId;
 
     if (this.videoId) {
+      const relatedVideos = await getResultsRelatedToVideo(this.videoId);
+
       this.videoDetails = await getVideoById(this.videoId);
+      this.relatedVideosList = await this.getRelatedVideosList(relatedVideos);
     } else {
       this.noVideos = true;
     }
@@ -142,7 +164,10 @@ export default {
     this.videoId = to.query.videoId;
 
     if (this.videoId) {
+      const relatedVideos = await getResultsRelatedToVideo(this.videoId);
+
       this.videoDetails = await getVideoById(this.videoId);
+      this.relatedVideosList = await this.getRelatedVideosList(relatedVideos);
     } else {
       this.noVideos = true;
     }
@@ -234,9 +259,18 @@ export default {
   }
 
   &__description {
-    clear: both;
     margin-top: 3rem;
     font-size: 14px;
   }
+}
+
+.related-videos {
+  margin-top: 1rem;
+  border-top: 1px solid $grey-300;
+  padding-top: 1rem;
+}
+
+.clear-floats {
+  clear: both;
 }
 </style>
