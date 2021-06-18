@@ -6,6 +6,11 @@ import InfiniteLoading from "vue-infinite-loading";
 import "@/components/_globals";
 import "@/styles/_global.scss";
 
+// inline svg
+import InlineSvg from "vue-inline-svg";
+Vue.component("inline-svg", InlineSvg);
+
+// infinite loading for pagination
 Vue.config.productionTip = false;
 Vue.use(InfiniteLoading, {});
 
