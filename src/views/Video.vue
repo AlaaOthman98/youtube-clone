@@ -1,5 +1,7 @@
 <template>
-  <div>video</div>
+  <div>
+    <div class="video-player" v-html="videoDetails.embedHtml"></div>
+  </div>
 </template>
 
 <script>
@@ -36,4 +38,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.video-player {
+  position: relative;
+  width: 100%;
+  padding-bottom: 50vh;
+  height: 0;
+}
+
+</style>
