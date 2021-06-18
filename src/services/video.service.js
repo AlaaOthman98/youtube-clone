@@ -5,7 +5,7 @@ const videoApiUrl = `https://www.googleapis.com/youtube/v3/videos?key=${process.
 const getVideoById = async (videoId) => {
   try {
     const response = await fetch(
-      `${videoApiUrl}&part=snippet,statistics&id=${videoId}`
+      `${videoApiUrl}&part=snippet,player,statistics&id=${videoId}`
     );
     return new VideoItem(await response.json());
   } catch (error) {
