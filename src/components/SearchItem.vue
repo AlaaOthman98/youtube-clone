@@ -32,15 +32,38 @@
 
     <div v-if="itemDetails.type === 'video'">
       <div class="search-card">
-        <img
-          :src="itemDetails.thumbnails.mediumUrl"
-          :alt="itemDetails.title"
-          class="search-card__image"
-        />
+        <router-link
+          :to="{
+            path: 'video',
+            query: { videoId: itemDetails.id },
+          }"
+        >
+          <img
+            :src="itemDetails.thumbnails.mediumUrl"
+            :alt="itemDetails.title"
+            class="search-card__image"
+          />
+        </router-link>
 
         <div class="search-card__info">
-          <h4>{{ itemDetails.title }}</h4>
-          <span>{{ itemDetails.channelTitle }}</span>
+          <router-link
+            :to="{
+              path: 'video',
+              query: { videoId: itemDetails.id },
+            }"
+          >
+            <h4>{{ itemDetails.title }}</h4>
+          </router-link>
+
+          <router-link
+            :to="{
+              path: 'channel',
+              query: { channelId: itemDetails.channelId },
+            }"
+          >
+            <span>{{ itemDetails.channelTitle }}</span>
+          </router-link>
+
           <span>{{ viewsNumber }} views</span>
         </div>
       </div>

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 import SearchResultsComponent from "@/views/SearchResults";
 import ChannelComponent from "@/views/Channel";
+import VideoComponent from "@/views/Video";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,10 @@ const routes = [
   {
     path: "/channel",
     component: ChannelComponent,
+  },
+  {
+    path: "/video",
+    component: VideoComponent,
   },
 ];
 
