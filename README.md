@@ -81,4 +81,11 @@ npm run test:unit
       <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/channel-details.png"/>
     </td>
   </tr>
+
+  <tr>
+    <td>
+      <h2>Loading Status in App</h2>
+      <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/loading-status.png" />
+    </td>
+  </tr>
 </table>
