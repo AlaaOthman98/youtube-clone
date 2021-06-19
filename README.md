@@ -54,3 +54,31 @@ $ npm run build
 ```sh
 npm run test:unit
 ```
+
+# Screenshots
+
+## **Mobile Screens**
+
+<table>
+  <tr>
+    <td>
+      <h2>Search Results View</h2>
+      <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/search-results.png" />
+    </td>
+    <td>
+      <h2>Pagination</h2>
+      <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/pagination.png"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <h2>Video Details View</h2>
+      <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/video-details.png" />
+    </td>
+    <td>
+      <h2>Channel Details View</h2>
+      <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/channel-details.png"/>
+    </td>
+  </tr>
+</table>
