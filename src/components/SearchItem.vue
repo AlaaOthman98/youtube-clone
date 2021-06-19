@@ -171,7 +171,6 @@ export default {
         justify-content: center;
         padding: 0.75rem;
         color: $white;
-        font-weight: bold;
 
         .playlist-logo {
           width: 1.5rem;
