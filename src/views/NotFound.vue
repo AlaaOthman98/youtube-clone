@@ -1,10 +1,7 @@
 <template>
   <div>
     <div class="not-found">
-      <img
-        src="https://www.gstatic.com/youtube/src/web/htdocs/img/monkey.png"
-        alt="Not found"
-      />
+      <img src="@/assets/monkey.png" alt="Not found" />
       <h3>This page isn't available. Sorry about that.</h3>
     </div>
   </div>
