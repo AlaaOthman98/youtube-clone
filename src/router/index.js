@@ -22,7 +22,8 @@ const routes = [
     component: ChannelComponent,
   },
   {
-    path: "/video",
+    path: "/video/:videoId",
+    name: "video",
     component: VideoComponent,
   },
 ];

@@ -194,7 +194,7 @@ export default {
     },
   },
   async created() {
-    this.videoId = this.$route.query.videoId;
+    this.videoId = this.$route.params.videoId;
 
     if (this.videoId) {
       this.loading = true;
@@ -211,7 +211,7 @@ export default {
     }
   },
   async beforeRouteUpdate(to, from, next) {
-    this.videoId = to.query.videoId;
+    this.videoId = to.params.videoId;
 
     if (this.videoId) {
       this.loading = true;

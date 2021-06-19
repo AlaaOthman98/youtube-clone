@@ -34,8 +34,8 @@
       <div class="search-card">
         <router-link
           :to="{
-            path: 'video',
-            query: { videoId: itemDetails.id },
+            name: 'video',
+            params: { videoId: itemDetails.id },
           }"
         >
           <img
@@ -48,8 +48,8 @@
         <div class="search-card__info">
           <router-link
             :to="{
-              path: 'video',
-              query: { videoId: itemDetails.id },
+              name: 'video',
+              params: { videoId: itemDetails.id },
             }"
           >
             <h4>{{ itemDetails.title }}</h4>
