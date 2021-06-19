@@ -19,8 +19,9 @@ const getSearchResults = async (
   }
 };
 
-const getResultsRelatedToVideo = async (videoId) => {
-  const fullApiUrl = `${searchApiUrl}&part=snippet&relatedToVideoId=${videoId}&type=video`;
+const getResultsRelatedToVideo = async (videoId, nextPageToken = "") => {
+  let fullApiUrl = `${searchApiUrl}&part=snippet&relatedToVideoId=${videoId}&type=video`;
+  fullApiUrl += nextPageToken ? `&pageToken=${nextPageToken}` : "";
 
   try {
     const response = await fetch(fullApiUrl);

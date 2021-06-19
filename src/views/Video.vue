@@ -1,82 +1,90 @@
 <template>
   <div>
-    <div class="video-player" v-html="videoDetails.embedHtml"></div>
+    <BaseLoader v-if="loading" />
 
-    <div class="video-info">
-      <div class="video-info__heading">
-        <h3 class="video-info__heading__title">{{ videoDetails.title }}</h3>
-        <span
-          class="video-info__heading__description-toggle"
-          @click="showDescriptionToggle"
-        ></span>
-      </div>
+    <div v-else>
+      <div class="video-player" v-html="videoDetails.embedHtml"></div>
 
-      <div class="video-info__channel-and-views">
-        <router-link
-          :to="{
-            path: 'channel',
-            query: { channelId: videoDetails.channelId },
-          }"
-        >
-          <h4 class="channel-title">
-            {{ videoDetails.channelTitle }}
-          </h4>
-        </router-link>
-
-        <span class="views-count">{{ viewsNumber }} views</span>
-      </div>
-      <div class="video-info__rating">
-        <div class="video-info__rating__likes" @click="rateVideo($event)">
-          <inline-svg
-            style="width: 1.75rem; margin-right: 0.5rem"
-            :src="require('../assets/svg/like.svg')"
-            :fill="likeIconColor"
-          ></inline-svg>
-
-          {{ likesNumber }}
+      <div class="video-info">
+        <div class="video-info__heading">
+          <h3 class="video-info__heading__title">{{ videoDetails.title }}</h3>
+          <span
+            class="video-info__heading__description-toggle"
+            @click="showDescriptionToggle"
+          ></span>
         </div>
 
-        <div class="video-info__rating__dislikes" @click="rateVideo($event)">
+        <div class="video-info__channel-and-views">
+          <router-link
+            :to="{
+              path: 'channel',
+              query: { channelId: videoDetails.channelId },
+            }"
+          >
+            <h4 class="channel-title">
+              {{ videoDetails.channelTitle }}
+            </h4>
+          </router-link>
+
+          <span class="views-count">{{ viewsNumber }} views</span>
+        </div>
+        <div class="video-info__rating">
+          <div class="video-info__rating__likes" @click="rateVideo($event)">
+            <inline-svg
+              style="width: 1.75rem; margin-right: 0.5rem"
+              :src="require('../assets/svg/like.svg')"
+              :fill="likeIconColor"
+            ></inline-svg>
+
+            {{ likesNumber }}
+          </div>
+
+          <div class="video-info__rating__dislikes" @click="rateVideo($event)">
+            <inline-svg
+              style="width: 1.75rem; margin-right: 0.5rem"
+              :src="require('../assets/svg/dislike.svg')"
+              :fill="dislikeIconColor"
+            ></inline-svg>
+            {{ dislikesNumber }}
+          </div>
+        </div>
+
+        <div class="video-info__actions">
           <inline-svg
             style="width: 1.75rem; margin-right: 0.5rem"
-            :src="require('../assets/svg/dislike.svg')"
-            :fill="dislikeIconColor"
+            :src="require('../assets/svg/save-video.svg')"
+            :fill="'#979696'"
           ></inline-svg>
-          {{ dislikesNumber }}
+          <inline-svg
+            style="width: 1.75rem; margin-right: 0.5rem"
+            :src="require('../assets/svg/share.svg')"
+            :fill="'#979696'"
+          ></inline-svg>
+          <inline-svg
+            style="width: 1.75rem; margin-right: 0.5rem"
+            :src="require('../assets/svg/report-video.svg')"
+            :fill="'#979696'"
+          ></inline-svg>
+        </div>
+
+        <div class="video-info__description" v-if="showDescription">
+          {{ videoDetails.description }}
         </div>
       </div>
 
-      <div class="video-info__actions">
-        <inline-svg
-          style="width: 1.75rem; margin-right: 0.5rem"
-          :src="require('../assets/svg/save-video.svg')"
-          :fill="'#979696'"
-        ></inline-svg>
-        <inline-svg
-          style="width: 1.75rem; margin-right: 0.5rem"
-          :src="require('../assets/svg/share.svg')"
-          :fill="'#979696'"
-        ></inline-svg>
-        <inline-svg
-          style="width: 1.75rem; margin-right: 0.5rem"
-          :src="require('../assets/svg/report-video.svg')"
-          :fill="'#979696'"
-        ></inline-svg>
+      <div class="clear-floats"></div>
+
+      <div class="related-videos">
+        <SearchItem
+          v-for="(video, $index) in relatedVideosList"
+          :key="$index"
+          :itemDetails="video"
+        />
+
+        <infinite-loading @infinite="infiniteHandler" spinner="circles">
+          <div slot="no-more" style="margin: 0.5rem 0">No more results.</div>
+        </infinite-loading>
       </div>
-
-      <div class="video-info__description" v-if="showDescription">
-        {{ videoDetails.description }}
-      </div>
-    </div>
-
-    <div class="clear-floats"></div>
-
-    <div class="related-videos">
-      <SearchItem
-        v-for="(video, $index) in relatedVideosList"
-        :key="$index"
-        :itemDetails="video"
-      />
     </div>
   </div>
 </template>
@@ -93,12 +101,14 @@ const blueColor = "#3ea6ff";
 export default {
   data() {
     return {
+      loading: false,
       videoId: "",
       videoDetails: {},
       noVideos: false,
       likeIconColor: greyColor,
       dislikeIconColor: greyColor,
       showDescription: false,
+      relatedVideosResponse: {},
       relatedVideosList: [],
     };
   },
@@ -153,15 +163,49 @@ export default {
         relatedVideos.items.map(async (res) => await getVideoById(res.id))
       );
     },
+    async infiniteHandler($state) {
+      if (this.relatedVideosResponse.nextPageToken) {
+        const nextVideosResult = await getResultsRelatedToVideo(
+          this.videoId,
+          this.relatedVideosResponse.nextPageToken
+        );
+        const nextVideosResultList = await this.getRelatedVideosList(
+          nextVideosResult
+        );
+
+        this.relatedVideosResponse.items.push(...nextVideosResult.items);
+        this.relatedVideosResponse.nextPageToken =
+          nextVideosResult.nextPageToken;
+        this.relatedVideosResponse.totalResults = nextVideosResult.totalResults;
+        this.relatedVideosList.push(...nextVideosResultList);
+
+        $state.loaded();
+
+        if (
+          this.relatedVideosResponse.items?.length >=
+          this.relatedVideosResponse.totalResults
+        ) {
+          $state.complete();
+        }
+      } else {
+        $state.loaded();
+        $state.complete();
+      }
+    },
   },
   async created() {
     this.videoId = this.$route.query.videoId;
 
     if (this.videoId) {
-      const relatedVideos = await getResultsRelatedToVideo(this.videoId);
+      this.loading = true;
+      this.relatedVideosResponse = await getResultsRelatedToVideo(this.videoId);
 
       this.videoDetails = await getVideoById(this.videoId);
-      this.relatedVideosList = await this.getRelatedVideosList(relatedVideos);
+      this.relatedVideosList = await this.getRelatedVideosList(
+        this.relatedVideosResponse
+      );
+
+      this.loading = false;
     } else {
       this.noVideos = true;
     }
@@ -170,10 +214,16 @@ export default {
     this.videoId = to.query.videoId;
 
     if (this.videoId) {
-      const relatedVideos = await getResultsRelatedToVideo(this.videoId);
+      this.loading = true;
+
+      this.relatedVideosResponse = await getResultsRelatedToVideo(this.videoId);
 
       this.videoDetails = await getVideoById(this.videoId);
-      this.relatedVideosList = await this.getRelatedVideosList(relatedVideos);
+      this.relatedVideosList = await this.getRelatedVideosList(
+        this.relatedVideosResponse
+      );
+
+      this.loading = false;
     } else {
       this.noVideos = true;
     }
