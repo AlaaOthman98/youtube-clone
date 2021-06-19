@@ -87,5 +87,9 @@ npm run test:unit
       <h2>Loading Status in App</h2>
       <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/loading-status.png" />
     </td>
+    <td>
+      <h2>404 Page</h2>
+      <img src="https://raw.githubusercontent.com/AlaaOthman98/youtube-clone/main/.github/images/not-found.png" />
+    </td>
   </tr>
 </table>
