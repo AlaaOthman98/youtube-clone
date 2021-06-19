@@ -1,30 +1,34 @@
 <template>
   <div>
-    <SearchFilters
-      v-if="!noSearchResults"
-      @onFilterByType="filterResultsByType"
-      @onFilterByUploadDate="filterResultsByUploadDate"
-    />
-
-    <hr v-if="!noSearchResults" />
-
-    <div v-if="noSearchResults" class="no-results">
-      <h3>No Search Results</h3>
-    </div>
+    <div v-if="noQueryText" class="no-results">No provided search keyword</div>
 
     <div v-else>
-      <BaseLoader v-if="loading" />
+      <SearchFilters
+        v-if="!noSearchResults"
+        @onFilterByType="filterResultsByType"
+        @onFilterByUploadDate="filterResultsByUploadDate"
+      />
+
+      <hr v-if="!noSearchResults" />
+
+      <div v-if="noSearchResults" class="no-results">
+        <h3>No Search Results</h3>
+      </div>
 
       <div v-else>
-        <SearchItem
-          v-for="(item, $index) in searchResultList"
-          :key="$index"
-          :itemDetails="item"
-        />
+        <BaseLoader v-if="loading" />
 
-        <infinite-loading @infinite="infiniteHandler" spinner="circles">
-          <div slot="no-more" style="margin: 0.5rem 0">No more results.</div>
-        </infinite-loading>
+        <div v-else>
+          <SearchItem
+            v-for="(item, $index) in searchResultList"
+            :key="$index"
+            :itemDetails="item"
+          />
+
+          <infinite-loading @infinite="infiniteHandler" spinner="circles">
+            <div slot="no-more" style="margin: 0.5rem 0">No more results.</div>
+          </infinite-loading>
+        </div>
       </div>
     </div>
   </div>
@@ -50,6 +54,7 @@ export default {
       searchResult: {},
       searchResultList: [],
       noSearchResults: false,
+      noQueryText: false,
     };
   },
   components: {
@@ -64,6 +69,7 @@ export default {
       this.searchResultList = await this.getSearchList(this.searchResult.items);
 
       this.noSearchResults = this.searchResult.totalResults === 0;
+      this.noQueryText = false;
       this.loading = false;
     },
 
@@ -152,13 +158,13 @@ export default {
     this.searchKeyword = this.$route.query.query;
     this.searchKeyword
       ? await this.searchByKeyword(this.searchKeyword)
-      : (this.noSearchResults = true);
+      : (this.noQueryText = true);
   },
   async beforeRouteUpdate(to, from, next) {
     this.searchKeyword = to.query.query;
     this.searchKeyword
       ? await this.searchByKeyword(this.searchKeyword)
-      : (this.noSearchResults = true);
+      : (this.noQueryText = true);
 
     next();
   },
