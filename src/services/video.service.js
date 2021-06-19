@@ -1,4 +1,5 @@
 import { VideoItem } from "@/models/video.model";
+import router from "../router";
 
 const videoApiUrl = `https://www.googleapis.com/youtube/v3/videos?key=${process.env.VUE_APP_YOUTUBE_API_KEY}`;
 
@@ -10,6 +11,7 @@ const getVideoById = async (videoId) => {
     return new VideoItem(await response.json());
   } catch (error) {
     console.error(error);
+    router.push({ name: "notFound" });
   }
 };
 

@@ -1,4 +1,5 @@
 import { SearchResults } from "@/models/search-results.model";
+import router from "../router";
 
 const MAX_RESULTS_PER_PAGE = 20;
 const searchApiUrl = `https://youtube.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_API_KEY}&maxResults=${MAX_RESULTS_PER_PAGE}`;
@@ -16,6 +17,7 @@ const getSearchResults = async (
     return new SearchResults(await response.json());
   } catch (error) {
     console.error(error);
+    router.push({ name: "notFound" });
   }
 };
 
@@ -28,6 +30,7 @@ const getResultsRelatedToVideo = async (videoId, nextPageToken = "") => {
     return new SearchResults(await response.json());
   } catch (error) {
     console.error(error);
+    router.push({ name: "notFound" });
   }
 };
 

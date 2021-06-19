@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div v-if="noQueryText" class="no-results">No provided search keyword</div>
+    <div v-if="noQueryText" class="no-results">
+      <h3>No provided search keyword</h3>
+    </div>
 
     <div v-else>
       <SearchFilters
