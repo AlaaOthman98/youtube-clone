@@ -97,7 +97,7 @@ export default {
     },
   },
   async created() {
-    this.channelId = this.$route.query.channelId;
+    this.channelId = this.$route.params.channelId;
 
     if (this.channelId) {
       await this.getChannelPlaylists(this.channelId);
@@ -106,7 +106,7 @@ export default {
     }
   },
   async beforeRouteUpdate(to, from, next) {
-    this.channelId = to.query.channelId;
+    this.channelId = to.params.channelId;
 
     if (this.channelId) {
       await this.getChannelPlaylists(this.channelId);

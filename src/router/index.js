@@ -17,7 +17,8 @@ const routes = [
     component: SearchResultsComponent,
   },
   {
-    path: "/channel",
+    path: "/channel/:channelId",
+    name: "channel",
     component: ChannelComponent,
   },
   {

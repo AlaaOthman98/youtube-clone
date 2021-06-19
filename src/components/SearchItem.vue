@@ -4,8 +4,8 @@
       <div class="search-card channel">
         <router-link
           :to="{
-            path: 'channel',
-            query: { channelId: itemDetails.id },
+            name: 'channel',
+            params: { channelId: itemDetails.id },
           }"
         >
           <img
@@ -17,8 +17,8 @@
 
         <router-link
           :to="{
-            path: 'channel',
-            query: { channelId: itemDetails.id },
+            name: 'channel',
+            params: { channelId: itemDetails.id },
           }"
         >
           <div class="search-card__info">
@@ -57,8 +57,8 @@
 
           <router-link
             :to="{
-              path: 'channel',
-              query: { channelId: itemDetails.channelId },
+              name: 'channel',
+              params: { channelId: itemDetails.channelId },
             }"
           >
             <span>{{ itemDetails.channelTitle }}</span>

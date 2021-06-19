@@ -17,8 +17,8 @@
         <div class="video-info__channel-and-views">
           <router-link
             :to="{
-              path: 'channel',
-              query: { channelId: videoDetails.channelId },
+              name: 'channel',
+              params: { channelId: videoDetails.channelId },
             }"
           >
             <h4 class="channel-title">
