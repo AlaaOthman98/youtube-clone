@@ -5,6 +5,7 @@ class PlaylistItem {
   description;
   publishedAt;
   thumbnails;
+  channelId;
   channelTitle;
   itemCount;
 
@@ -23,6 +24,7 @@ class PlaylistItem {
       mediumUrl: apiPlaylist.items[0].snippet.thumbnails.medium.url,
       highUrl: apiPlaylist.items[0].snippet.thumbnails.high.url,
     };
+    this.channelId = apiPlaylist.items[0].snippet.channelId;
     this.channelTitle = apiPlaylist.items[0].snippet.channelTitle;
     this.itemCount = apiPlaylist.items[0].contentDetails.itemCount;
   }
