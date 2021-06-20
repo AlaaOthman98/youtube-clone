@@ -17,26 +17,28 @@ class VideoItem {
   }
 
   setModifiedVideo(apiVideo) {
-    this.id = apiVideo.items[0].id;
+    if (apiVideo.items[0]) {
+      this.id = apiVideo.items[0].id;
 
-    this.type = "video";
+      this.type = "video";
 
-    this.title = apiVideo.items[0].snippet.title;
-    this.description = apiVideo.items[0].snippet.description;
-    this.publishedAt = apiVideo.items[0].snippet.publishedAt;
-    this.thumbnails = {
-      defaultUrl: apiVideo.items[0].snippet.thumbnails.default.url,
-      mediumUrl: apiVideo.items[0].snippet.thumbnails.medium.url,
-      highUrl: apiVideo.items[0].snippet.thumbnails.high.url,
-    };
-    this.channelId = apiVideo.items[0].snippet.channelId;
-    this.channelTitle = apiVideo.items[0].snippet.channelTitle;
+      this.title = apiVideo.items[0].snippet.title;
+      this.description = apiVideo.items[0].snippet.description;
+      this.publishedAt = apiVideo.items[0].snippet.publishedAt;
+      this.thumbnails = {
+        defaultUrl: apiVideo.items[0].snippet.thumbnails.default.url,
+        mediumUrl: apiVideo.items[0].snippet.thumbnails.medium.url,
+        highUrl: apiVideo.items[0].snippet.thumbnails.high.url,
+      };
+      this.channelId = apiVideo.items[0].snippet.channelId;
+      this.channelTitle = apiVideo.items[0].snippet.channelTitle;
 
-    this.viewCount = apiVideo.items[0].statistics.viewCount;
-    this.likeCount = apiVideo.items[0].statistics.likeCount;
-    this.dislikeCount = apiVideo.items[0].statistics.dislikeCount;
+      this.viewCount = apiVideo.items[0].statistics.viewCount;
+      this.likeCount = apiVideo.items[0].statistics.likeCount;
+      this.dislikeCount = apiVideo.items[0].statistics.dislikeCount;
 
-    this.embedHtml = apiVideo.items[0].player.embedHtml;
+      this.embedHtml = apiVideo.items[0].player.embedHtml;
+    }
   }
 }
 
