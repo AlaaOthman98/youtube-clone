@@ -28,25 +28,21 @@
 
           <span class="views-count">{{ viewsNumber }} views</span>
         </div>
+
         <div class="video-info__rating">
-          <div class="video-info__rating__likes" @click="rateVideo($event)">
-            <inline-svg
-              style="width: 1.75rem; margin-right: 0.5rem"
-              :src="require('../assets/svg/like.svg')"
-              :fill="likeIconColor"
-            ></inline-svg>
+          <RatingButton
+            :rateType="'like'"
+            :rateNumber="+videoDetails.likeCount"
+            :isActive="currentRating === 'like'"
+            @rateClick="onRateClick($event)"
+          />
 
-            {{ likesNumber }}
-          </div>
-
-          <div class="video-info__rating__dislikes" @click="rateVideo($event)">
-            <inline-svg
-              style="width: 1.75rem; margin-right: 0.5rem"
-              :src="require('../assets/svg/dislike.svg')"
-              :fill="dislikeIconColor"
-            ></inline-svg>
-            {{ dislikesNumber }}
-          </div>
+          <RatingButton
+            :rateType="'dislike'"
+            :rateNumber="+videoDetails.dislikeCount"
+            :isActive="currentRating === 'dislike'"
+            @rateClick="onRateClick($event)"
+          />
         </div>
 
         <div class="video-info__actions">
@@ -70,9 +66,8 @@
         <div class="video-info__description" v-if="showDescription">
           {{ videoDetails.description }}
         </div>
+        <div class="clear-floats"></div>
       </div>
-
-      <div class="clear-floats"></div>
 
       <div class="related-videos">
         <SearchItem
@@ -94,9 +89,7 @@ import { getVideoById } from "@/services/video.service";
 import { getResultsRelatedToVideo } from "@/services/search.service";
 
 import SearchItem from "@/components/SearchItem";
-
-const greyColor = "#979696";
-const blueColor = "#3ea6ff";
+import RatingButton from "../components/RatingButton.vue";
 
 export default {
   data() {
@@ -105,8 +98,7 @@ export default {
       videoId: "",
       videoDetails: {},
       noVideos: false,
-      likeIconColor: greyColor,
-      dislikeIconColor: greyColor,
+      currentRating: "",
       showDescription: false,
       relatedVideosResponse: {},
       relatedVideosList: [],
@@ -114,45 +106,18 @@ export default {
   },
   components: {
     SearchItem,
+    RatingButton,
   },
   computed: {
     viewsNumber() {
       return Number(this.videoDetails.viewCount).toLocaleString();
     },
-    likesNumber() {
-      return Number(this.videoDetails.likeCount).toLocaleString();
-    },
-    dislikesNumber() {
-      return Number(this.videoDetails.dislikeCount).toLocaleString();
-    },
   },
   methods: {
-    rateVideo(event) {
-      this.likeIconColor = greyColor;
-      this.dislikeIconColor = greyColor;
+    onRateClick(rateType) {
+      // Rating Api should be called here depending on which rate is clicked
 
-      const clickedEl = event.target;
-      const chosenRate = clickedEl.classList.contains(
-        "video-info__rating__likes"
-      )
-        ? "like"
-        : "dislike";
-      const currentlyActive = clickedEl.classList.contains("active");
-
-      switch (chosenRate) {
-        case "like":
-          this.likeIconColor = currentlyActive ? greyColor : blueColor;
-          break;
-        case "dislike":
-          this.dislikeIconColor = currentlyActive ? greyColor : blueColor;
-          break;
-      }
-
-      document.querySelectorAll(".active").forEach((el) => {
-        if (el !== clickedEl) el.classList.remove("active");
-      });
-
-      clickedEl.classList.toggle("active");
+      this.currentRating = this.currentRating === rateType ? "" : rateType;
     },
     showDescriptionToggle(event) {
       event.target.classList.toggle("open");
@@ -287,25 +252,6 @@ export default {
     display: inline-flex;
     align-items: center;
     float: left;
-    color: $grey-500;
-    user-select: none;
-
-    &__likes {
-      display: flex;
-      align-items: center;
-      margin-right: 0.75rem;
-      cursor: pointer;
-    }
-
-    &__dislikes {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .active {
-      color: #3ea6ff;
-    }
   }
 
   &__actions {
