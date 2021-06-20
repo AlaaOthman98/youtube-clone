@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import SearchResultsComponent from "@/views/SearchResults";
 import ChannelComponent from "@/views/Channel";
 import VideoComponent from "@/views/Video";
+import PlaylistComponent from "@/views/Playlist";
 import NotFoundComponent from "@/views/NotFound";
 
 Vue.use(VueRouter);
@@ -26,6 +27,11 @@ const routes = [
     path: "/video/:videoId",
     name: "video",
     component: VideoComponent,
+  },
+  {
+    path: "/playlist/:playlistId",
+    name: "playlist",
+    component: PlaylistComponent,
   },
   {
     path: "**",

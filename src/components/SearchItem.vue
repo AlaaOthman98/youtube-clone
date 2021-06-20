@@ -71,22 +71,44 @@
 
     <div v-if="itemDetails.type === 'playlist'">
       <div class="search-card playlist">
-        <div class="playlist__thumbnail">
-          <img
-            :src="itemDetails.thumbnails.mediumUrl"
-            :alt="itemDetails.title"
-            class="search-card__image"
-          />
+        <router-link
+          :to="{
+            name: 'playlist',
+            params: { playlistId: itemDetails.id },
+          }"
+        >
+          <div class="playlist__thumbnail">
+            <img
+              :src="itemDetails.thumbnails.mediumUrl"
+              :alt="itemDetails.title"
+              class="search-card__image"
+            />
 
-          <div class="playlist__thumbnail__overlay">
-            <span>{{ itemDetails.itemCount }}</span>
-            <img src="@/assets/svg/playlist-logo.svg" class="playlist-logo" />
+            <div class="playlist__thumbnail__overlay">
+              <span>{{ itemDetails.itemCount }}</span>
+              <img src="@/assets/svg/playlist-logo.svg" class="playlist-logo" />
+            </div>
           </div>
-        </div>
+        </router-link>
 
         <div class="search-card__info">
-          <h4>{{ itemDetails.title }}</h4>
-          <span>{{ itemDetails.channelTitle }}</span>
+          <router-link
+            :to="{
+              name: 'playlist',
+              params: { playlistId: itemDetails.id },
+            }"
+          >
+            <h4>{{ itemDetails.title }}</h4>
+          </router-link>
+
+          <router-link
+            :to="{
+              name: 'channel',
+              params: { channelId: itemDetails.channelId },
+            }"
+          >
+            <span>{{ itemDetails.channelTitle }}</span>
+          </router-link>
         </div>
       </div>
     </div>
