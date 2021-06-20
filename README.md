@@ -35,6 +35,30 @@ $ cd youtube-clone
 $ npm install
 ```
 
+4. **Get Youtube Api Key**
+
+For this application to work properly, you need to get an api key from Youtube Data API v3.
+
+#### 1. Steps to create and use api key:
+
+- Go to [Google Developer Console](https://console.developers.google.com/).
+- Login with your Gmail account.
+- Create a new project and name it _eg. youtube-api_.
+- Choose the newly created project.
+- Go to library and search for Youtube Data API v3.
+- Choose **ENABLE** to be eligible for creating api key.
+- Go to credentials and create api key then copy it.
+
+  <center><a target="_blank" href="https://www.youtube.com/watch?v=N18czV5tj5o">Here is a video explaining the previous steps.</a></center>
+
+#### 2. Insert api key into the project
+
+- After navigation to the project root folder, create `.env.local` file.
+- Insert this line in the file:
+  ```
+  VUE_APP_YOUTUBE_API_KEY=${YOUR_API_KEY}
+  ```
+
 ### Running Project
 
 1. **Compiles and hot-reloads for development**
