@@ -21,15 +21,8 @@
             {{ channelDetails.title }}
           </h3>
           <div class="channel-header__info__subscribe">
-            <a
-              class="channel-header__info__subscribe__link"
-              v-bind:class="{ subscribed: subscribedToChannel }"
-              @click="subscribedToChannel = !subscribedToChannel"
-            >
-              <img src="@/assets/svg/logo-red.svg" />
-              <span v-if="!subscribedToChannel">subscribe</span>
-              <span v-else>subscribed</span>
-            </a>
+            <SubscribeButton />
+
             <span class="channel-header__info__subscribe__count">{{
               getSubscribesCount
             }}</span>
@@ -57,6 +50,7 @@ import { getChannelById } from "@/services/channel.service";
 import { getPlaylistsByChannelId } from "@/services/playlist.service";
 import { PlaylistItem } from "@/models/playlist.model";
 import SearchItem from "@/components/SearchItem";
+import SubscribeButton from "../components/SubscribeButton.vue";
 
 export default {
   name: "Channel",
@@ -66,7 +60,6 @@ export default {
       channelId: "",
       channelDetails: {},
       channelPlaylists: [],
-      subscribedToChannel: false,
       noPlaylistsFound: false,
     };
   },
@@ -77,6 +70,7 @@ export default {
   },
   components: {
     SearchItem,
+    SubscribeButton,
   },
   methods: {
     async getChannelPlaylists(channelId) {
@@ -148,24 +142,6 @@ export default {
     &__subscribe {
       display: flex;
       align-items: center;
-
-      &__link {
-        display: flex;
-        align-items: center;
-        text-transform: uppercase;
-        color: $primary-red;
-        margin-right: 0.5rem;
-        cursor: pointer;
-
-        img {
-          margin-right: 0.25rem;
-          width: 25px;
-        }
-
-        &.subscribed {
-          color: $grey-500;
-        }
-      }
 
       &__count {
         color: $grey-500;
