@@ -1,9 +1,7 @@
 <template>
   <header class="yt-header">
     <div class="yt-header__logo">
-      <router-link to="/">
-        <img src="@/assets/svg/logo-white.svg" alt="logo" />
-      </router-link>
+      <img src="@/assets/svg/logo-white.svg" alt="logo" />
     </div>
 
     <div class="yt-header__title" v-if="!showSearchField">
