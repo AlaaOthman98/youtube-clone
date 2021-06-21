@@ -1,5 +1,3 @@
-import router from "../router";
-
 const MAX_RESULTS_PER_PAGE = 20;
 const playlistApiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?key=${process.env.VUE_APP_YOUTUBE_API_KEY}`;
 
@@ -12,7 +10,6 @@ const getPlaylistItems = async (playlistId, nextPageToken = "") => {
     return await response.json();
   } catch (error) {
     console.error(error);
-    router.push({ name: "notFound" });
   }
 };
 
