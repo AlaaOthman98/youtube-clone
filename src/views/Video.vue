@@ -10,6 +10,7 @@
           <h3 class="video-info__heading__title">{{ videoDetails.title }}</h3>
           <span
             class="video-info__heading__description-toggle"
+            :class="{ open: showDescription }"
             @click="showDescriptionToggle"
           ></span>
         </div>
@@ -119,8 +120,7 @@ export default {
 
       this.currentRating = this.currentRating === rateType ? "" : rateType;
     },
-    showDescriptionToggle(event) {
-      event.target.classList.toggle("open");
+    showDescriptionToggle() {
       this.showDescription = !this.showDescription;
     },
     getRelatedVideosList(relatedVideos) {
